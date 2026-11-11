@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
@@ -8,7 +7,7 @@ const client = generateClient<Schema>();
 
 function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
-  const { signOut } = useAuthenticator();
+  const { signOut, user } = useAuthenticator();
 
   useEffect(() => {
     const subscription = client.models.Todo.observeQuery().subscribe({
@@ -32,7 +31,7 @@ function App() {
 
   return (
     <main>
-      <h1>My todos</h1>
+      <h1>{user?.signInDetails?.loginId}'s todos</h1>
 
       <button onClick={createTodo}>+ new</button>
 
